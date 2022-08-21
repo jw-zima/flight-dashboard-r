@@ -1,0 +1,70 @@
+{
+	// Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	"R block quiet": {
+		"prefix": "rq",
+		"body":
+		["```{r $1, fig.cap='', fig.margin = FALSE, echo=FALSE, message=FALSE, warning=FALSE}",
+		"$TM_SELECTED_TEXT",
+		"```",
+		""],
+		"description": "r block quiet"
+		// "scope": "rmarkdown",
+	},
+	"R block": {
+		"prefix": "rbl",
+		"body":"```{r $1, fig.cap=''}",
+		"$TM_SELECTED_TEXT",
+		"```",
+		"",
+		"description": "r block"
+		// "scope": "rmarkdown",
+	},
+
+	"R image": {
+		"prefix": "rimg",
+		"body": "knitr::include_graphics('./figures/$1')",
+		"description": "R image"
+		// "scope": "rmarkdown",
+	},	
+
+	// $1 is burn
+	// $2 is thin
+	// $3 is mean/variation
+	// $0 is caption
+	"R margin figure caption": {
+		"prefix": "rfigm",
+		"body": ["### $3 Burnin $1 Thin $2",
+		"",
+		"```{r $3_burn$1_thin$2, fig.cap=$3_burn$1_thin$2_cap, fig.margin = TRUE, echo=FALSE, message=FALSE, warning=FALSE}",
+		"$3_burn$1_thin$2_cap <- fig_nums('$3_burn$1_thin$2_cap', '$0')",
+		"",
+		"$4",
+		"```",
+		"<!--#\t(`r citef('$3_burn$1_thin$2_cap')`) -->",
+		"",]
+		"description": "R figure margin"
+		// "scope": "rmarkdown",
+	},
+
+	"R figure caption": {
+		"prefix": "rfig",
+		"body": 
+		["### $3 Burnin $1 Thin $2",
+		"",
+		"```{r $3_burn$1_thin$2, fig.cap=$3_burn$1_thin$2_cap, fig.margin = FALSE, echo=FALSE, message=FALSE, warning=FALSE}",
+		"$3_burn$1_thin$2_cap <- fig_nums('$3_burn$1_thin$2_cap', '$0')",
+		"",
+		"$4",
+		"```",
+		"<!--#\t(`r citef('$3_burn$1_thin$2_cap')`) -->",
+		"",],
+		"description": "R figure margin"
+		// "scope": "rmarkdown",
+	},
+	// LATER: downcase: https://stackoverflow.com/questions/64246642/vscode-snippet-convert-first-uppercase-letter-to-lowercase
+}
