@@ -2,6 +2,8 @@
 /data/raw/airlines.csv
 /data/raw/airports-extended.csv
 /data/raw/delays_2019.csv
+/data/interim/tb_flights_2019.rds
+/data/processed/tb_flights_2019_filtered.rds
 
 # History files
 .Rhistory

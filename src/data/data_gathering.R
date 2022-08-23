@@ -1,13 +1,12 @@
-#=========================== SETUP =================================
+#=========================== SETUP ==================================
 library(tidyverse)
 library(readr)
 library(magrittr)
 library(lubridate)
 library(ggplot2)
 library(plotly)
-library(DataExplorer)
 
-#=========================== UDFs =================================
+#=========================== UDFs ===================================
 clean_colnames <- function(x){
   x %>%
     set_colnames(
@@ -20,7 +19,7 @@ na_to_zero_replace <- function(x){
   ifelse(is.na(x), 0, x)
 }
 
-#=========================== DATA LOAD ============================
+#=========================== DATA LOAD ==============================
 # airport data
 colnames_airports_data <- c("Airport ID", "Airport Name", "City",
                             "Country", "IATA", "ICAO", "Latitude",
@@ -48,7 +47,7 @@ tb_flights <- read_csv("data/raw/delays_2019.csv", show_col_types = FALSE) %>%
   clean_colnames() %>%
   select(-c(TAXI_OUT, WHEELS_OFF, WHEELS_ON, TAXI_IN, `___21`))
 
-#=========================== DATA CLEANING ========================
+#=========================== DATA CLEANING ==========================
 tb_flights <- tb_flights %>%
   rename(CARRIER = OP_UNIQUE_CARRIER,
          FL_NUM = OP_CARRIER_FL_NUM,
@@ -96,20 +95,20 @@ tb_flights <- tb_flights %>%
          contains("DEST"), contains("DEP"), contains("ARR"),
          ends_with("DELAY"), everything())
   
-#=========================== VISUALISATION ========================
-tb_flights %>%
-  group_by(CARRIER_NAME) %>%
-  summarise(NB_FLIGHTS_THOUSAND = n() / 1000) %>%
-  ggplot(.) %+%
-  geom_col(aes(x = NB_FLIGHTS_THOUSAND, y = reorder(CARRIER_NAME, NB_FLIGHTS_THOUSAND, sum))) %+%
-  ylab("AIRLINE") %+%
-  ggtitle("Number of flights in 2019 by airline") %+%
-  theme_light() %>%
-  ggplotly()
+# #=========================== VISUALISATION ========================
+# tb_flights %>%
+#   group_by(CARRIER_NAME) %>%
+#   summarise(NB_FLIGHTS_THOUSAND = n() / 1000) %>%
+#   ggplot(.) %+%
+#   geom_col(aes(x = NB_FLIGHTS_THOUSAND, y = reorder(CARRIER_NAME, NB_FLIGHTS_THOUSAND, sum))) %+%
+#   ylab("AIRLINE") %+%
+#   ggtitle("Number of flights in 2019 by airline") %+%
+#   theme_light() %>%
+#   ggplotly()
 
-#=========================== VISUALISATION ========================
+#=========================== DATA SAVE ==============================
+write_rds(tb_flights, "data/interim//tb_flights_2019.rds")
+
 tb_flights %>%
-  create_report(
-    output_file = "EDA Report.html",
-    output_dir = "reports",
-    report_title = "EDA Report - Flight arrivals and delays")
+  na.omit() %>%
+  write_rds(., "data/processed/tb_flights_2019_filtered.rds")
