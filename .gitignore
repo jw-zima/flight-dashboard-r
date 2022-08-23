@@ -4,6 +4,7 @@
 /data/raw/delays_2019.csv
 /data/interim/tb_flights_2019.rds
 /data/processed/tb_flights_2019_filtered.rds
+/data/processed/dashboard_*
 
 # History files
 .Rhistory
