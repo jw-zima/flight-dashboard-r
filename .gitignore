@@ -1,3 +1,7 @@
+# Big data files
+/data/raw/airlines.csv
+/data/raw/airports-extended.csv
+/data/raw/delays_2019.csv
 
 # History files
 .Rhistory

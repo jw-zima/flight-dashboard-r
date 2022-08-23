@@ -1,10 +1,52 @@
 #  flight-dashboard-r
- 
-A short description of the project.
 
-## Getting started
+# Shiny dashboard with stast on flight arrivals and delays in US in 2019
+<p align="left">
+    <a alt="Data Analysis">
+        <img src="https://img.shields.io/badge/%20-Data%20Analysis%20-orange" /></a>
+    <a alt="Visualisation">
+        <img src="https://img.shields.io/badge/%20-Visualisation%20-orange" /></a>
+    <a alt="Dashboard">
+        <img src="https://img.shields.io/badge/%20-Dashboard%20-orange" /></a>
+</p>
 
+## General info
+
+#### Problem Statement
+TO BE DONE
+
+## Notes
+TO BE DONE
+
+## Technologies
+
+<p align="left">
+    <a alt="R">
+        <img src="https://img.shields.io/badge/%20-R%20-blue" /></a>
+    <a alt="Shiny">
+        <img src="https://img.shields.io/badge/%20-Shiny%20-blue" /></a>
+    <a alt="bash">
+        <img src="https://img.shields.io/badge/%20-bash%20-blue" /></a>
+</p>
+
+
+## References
+
+Datasets are were downloaded from the kaggle platform using the official [Kaggle API](https://github.com/Kaggle/kaggle-api)
+* [Airline Database](https://www.kaggle.com/datasets/open-flights/airline-database)
+* [Airports, Train Stations, and Ferry Terminals](https://www.kaggle.com/datasets/open-flights/airports-train-stations-and-ferry-terminals)
+* [Airline Delay Analysis](https://www.kaggle.com/datasets/sherrytp/airline-delay-analysis)
+
+--------
+## Usage
+ALL BELOW TO BE DONE
+## Project Organization
 See the [filestructure]
+TO BE ADDED
+
+## How to run it
+TO BE DONE
+
 
 ## Install developer requirements
 
@@ -142,4 +184,7 @@ How to write tests: https://kbroman.org/pkg_primer/pages/tests.html
 
 ## Contributors
 
-jw-zima -
+jw-zima
+
+--------
+<p><small>Project based on the <a target="_blank" href="https://github.com/tgrrr/cookiecutter-data-science-r">cookiecutter data science for r project template</a>. #cookiecutterdatascience</small></p>

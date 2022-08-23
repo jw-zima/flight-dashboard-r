@@ -21,10 +21,11 @@ na_to_zero_replace <- function(x){
 }
 
 #=========================== DATA LOAD ============================
-colnames_airports_data <- c("Airport ID", "airport Name", "City",
+# airport data
+colnames_airports_data <- c("Airport ID", "Airport Name", "City",
                             "Country", "IATA", "ICAO", "Latitude",
                             "Longitude", "Altitude", "Timezone Hours",
-                            "Daylight savings time", "Timezone", "type",
+                            "Daylight savings time", "Timezone", "Type",
                             "Source")
 
 tb_airports <- read_csv("data/raw/airports-extended.csv",
@@ -35,11 +36,14 @@ tb_airports <- read_csv("data/raw/airports-extended.csv",
          LATITUDE, LONGITUDE)
 
 
-tb_airlines <- read_csv("data/raw/airlines.csv", show_col_types = FALSE) %>%
+# airline data
+tb_airlines <- read_csv("data/raw/airlines.csv", 
+                        show_col_types = FALSE) %>%
   clean_colnames() %>%
   select(NAME, IATA, COUNTRY) %>%
   set_colnames(str_c("CARRIER_", colnames(.)))
 
+# flight data
 tb_flights <- read_csv("data/raw/delays_2019.csv", show_col_types = FALSE) %>%
   clean_colnames() %>%
   select(-c(TAXI_OUT, WHEELS_OFF, WHEELS_ON, TAXI_IN, `___21`))
