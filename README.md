@@ -180,8 +180,6 @@ testthat::test_dir('tests')
 
 How to write tests: https://kbroman.org/pkg_primer/pages/tests.html
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
-
 ## Contributors
 
 jw-zima

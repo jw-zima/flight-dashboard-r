@@ -5,9 +5,16 @@ library(magrittr)
 library(lubridate)
 library(ggplot2)
 library(plotly)
+library(docstring)
 
 #=========================== UDFs ===================================
-clean_colnames <- function(x){
+clean_colnames <- function(df){
+  #' Clean and unify column names
+  #' @description Make all column names uppercase and replace punctuation signs with underscore
+  #' @param df data frame 
+  #' @usage clean_colnames(df)
+  #' @return data frame with cleaned and unified column names
+  #' @examples clean_colnames(iris)
   x %>%
     set_colnames(
       toupper(colnames(.)) %>%
@@ -16,6 +23,12 @@ clean_colnames <- function(x){
 }
 
 na_to_zero_replace <- function(x){
+  #' Replace missing values with 0
+  #' @description This function replaces missing values with 0
+  #' @param x vector
+  #' @usage na_to_zero_replace(x)
+  #' @return vector with NAs replaced with 0
+  #' @examples na_to_zero_replace(c(1, 2, 4, NA, 4, 3))
   ifelse(is.na(x), 0, x)
 }
 
@@ -67,7 +80,7 @@ tb_flights <- tb_flights %>%
             na_to_zero_replace) %>%
   # create new variables
   mutate(ROUTE = paste0(ORIGIN, "-", DEST),
-         ROUTE_NAME = paste0(ORIGIN_NAME, "-", DEST_NAME),
+         ROUTE_NAME = paste0(ORIGIN_CITY, "-", DEST_CITY),
          FLAG_ARR_DELAYED = ifelse(ARR_TIME_DIFF > 0, 1, 0),
          FLAG_ARR_DELAYED_15MIN = ifelse(ARR_TIME_DIFF >= 15, 1, 0),
          FLAG_ARR_DELAYED_60MIN = ifelse(ARR_TIME_DIFF >= 60, 1, 0),
@@ -87,14 +100,19 @@ tb_flights <- tb_flights %>%
                                   DEP_HOUR >= 23 | DEP_HOUR <= 2 ~ "night 23-02",
                                   DEP_HOUR >= 3 & DEP_HOUR <= 6 ~ "early morning 03-06",
                                   is.na(DEP_HOUR) ~ "unknown",
-                                  TRUE ~ "error")) %>% 
+                                  TRUE ~ "error"),
+         MONTH = factor(MONTH, levels = month.name),
+         WEEKDAY = factor(WEEKDAY, levels = c("Monday", "Tuesday", "Wednesday",
+                                              "Thursday", "Friday", "Saturday", "Sunday")),
+         DEP_DAY_TIME = factor(DEP_DAY_TIME, levels = c("morning 7-10", "around noon 11-14", "afternoon 15-18",
+                                                        "evening 19-22", "night 23-02", "early morning 03-06", "unknown", "error"))) %>% 
   # reorder columns
   select(-DEP_HOUR) %>%
   select(FL_DATE, MONTH, WEEKDAY, DEP_DAY_TIME,
          starts_with("CARRIER"), FL_NUM, starts_with("ROUTE"), contains("ORIG"),
          contains("DEST"), contains("DEP"), contains("ARR"),
          ends_with("DELAY"), everything())
-  
+
 # #=========================== VISUALISATION ========================
 # tb_flights %>%
 #   group_by(CARRIER_NAME) %>%
