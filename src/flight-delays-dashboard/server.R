@@ -5,12 +5,20 @@ library(magrittr)
 library(ggplot2)
 library(plotly)
 library(leaflet)
+library(docstring)
 
+# params to host in local network:
 # options(shiny.host = '192.168.0.196')
 # options(shiny.port = 8080)
 
 #=========================== UDFs ==============================
 map_stats_to_colnames <- function(input_string){
+    #' Replace statistic name with the corresponding column name
+    #' @description This function replaces statistic name with the corresponding column name
+    #' @param input_string string with statistic name
+    #' @usage map_stats_to_colnames(input_string)
+    #' @return string representing column name referring to passed input_string
+    #' @examples map_stats_to_colnames("Number of flights)
     case_when(
         input_string == "Number of flights" ~ "NB_FLIGHTS",
         input_string == "Number of routes" ~ "NB_ROUTES",
@@ -23,6 +31,16 @@ map_stats_to_colnames <- function(input_string){
 }
 
 plot_barplot_stat_by_time <- function(df, stat, carrier, time_var) {
+    #' Bar plot showing selected statistic for given carrier and time split.
+    #' @description This function makes a plotly bar plot showing selected statistic for given carrier and time split.
+    #' @param df data frame stroing summarised data
+    #' @param stat string, name of selected column with statictics
+    #' @param carrier string, name of selected airline
+    #' @param time_var string, name of selected time split ("MONTH", "WEEKDAY", "DEP_DAY_TIME")
+    #' @usage plot_barplot_stat_by_time(df, stat, carrier, time_var)
+    #' @return bar plot rendered with ggplot and plotly 
+    #' @examples plot_barplot_stat_by_time(df = dashboard_data_airlines_MONTH,
+    # stat = "NB_FLIGHTS", carrier = "OVERALL, time_var = "MONTH")
     time_var_cleaned <- ifelse(time_var == "DEP_DAY_TIME",
                                "Departure day time",
                                str_to_title(time_var))
@@ -42,6 +60,14 @@ plot_barplot_stat_by_time <- function(df, stat, carrier, time_var) {
 }
 
 add_info_column <- function(df, type){
+    #' Create new column with concatenated the most important information from other columns.
+    #' Data from this new column can be displayed on the leaflet map.
+    #' @description This function reates new column with concatenated the most important information from other columns.
+    #' @param df data frame storing flights' and delays' data
+    #' @param type string, which stats should be computed: "route" or "airport"
+    #' @usage add_info_column(df, type)
+    #' @return  data frame with additional column
+    #' @examples add_info_column(dashboard_data_routes, "route")
     df <- df %>%
         mutate(INFO = paste(paste0("# flights: ", NB_FLIGHTS),
                             paste0("% flights on time: ", FLIGHTS_ON_TIME_PCT),
