@@ -5,9 +5,9 @@ account: jw-zima
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6869920
-bundleId: 6248504
+bundleId: 6248567
 url: https://jw-zima.shinyapps.io/flight-delays-dashboard/
-when: 1661787784.49836
-lastSyncTime: 1661787784.49838
+when: 1661789004.91399
+lastSyncTime: 1661789004.91399
 asMultiple: FALSE
 asStatic: FALSE

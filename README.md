@@ -13,7 +13,18 @@
 ## General info
 
 #### Problem Statement
-TO BE DONE
+The app delivers summary statitics on **2019 US domestic traffic data** and **on-time performance** of flights operated by large air carriers along with providing **delay reasons**.
+
+## Website
+https://jw-zima.shinyapps.io/flight-delays-dashboard/
+
+![](/references/tab_stats.PNG)
+
+![](/references/tab_routes.PNG)
+
+![](/references/tab_airports.PNG)
+
+![](/references/tab_delay_reasons.PNG)
 
 ## Notes
 TO BE DONE

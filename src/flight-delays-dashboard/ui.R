@@ -124,7 +124,7 @@ ui <- dashboardPage(
             tabItem(tabName = "tabInfo",
                     h2("About"),
                     h3("Context"),
-                    span("The app delivers summary statitics on "), strong("2021 US domestic traffic data "), 
+                    span("The app delivers summary statitics on "), strong("2019 US domestic traffic data "), 
                     span("and "), strong("on-time performance "),
                     span("of flights operated by large air carriers along with providing "),
                     strong("delay reasons."),
