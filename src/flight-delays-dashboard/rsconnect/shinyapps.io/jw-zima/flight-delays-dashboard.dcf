@@ -1,0 +1,13 @@
+name: flight-delays-dashboard
+title: flight-delays-dashboard
+username:
+account: jw-zima
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6869920
+bundleId: 6248504
+url: https://jw-zima.shinyapps.io/flight-delays-dashboard/
+when: 1661787784.49836
+lastSyncTime: 1661787784.49838
+asMultiple: FALSE
+asStatic: FALSE

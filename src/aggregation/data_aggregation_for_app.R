@@ -104,7 +104,10 @@ tb_stats_airline_DAY <- calc_overall_stats_by_airline_and_split(df, "FL_DATE")
 
 #====== Routes tab ======
 tb_stats_routes <- left_join(
-  calc_overall_stats_by_airline_and_split(df, c("ROUTE", "ROUTE_NAME")),
+  calc_overall_stats_by_airline_and_split(df, 
+                                          c("ROUTE", "ROUTE_NAME", 
+                                                "ORIGIN_LATITUDE", "ORIGIN_LONGITUDE",
+                                                "DEST_LATITUDE", "DEST_LONGITUDE")),
   df %>%
     group_by(ROUTE, ROUTE_NAME, 
              ORIGIN_LATITUDE, ORIGIN_LONGITUDE,
@@ -114,7 +117,9 @@ tb_stats_routes <- left_join(
               FLIGHT_TIME = mean(AIR_TIME),
               .groups = "drop") %>%
     mutate(CARRIER_NAME = "OVERALL"),
-  by = c("ROUTE", "ROUTE_NAME", "CARRIER_NAME")) %>%
+  by = c("ROUTE", "ROUTE_NAME", "CARRIER_NAME",
+         "ORIGIN_LATITUDE", "ORIGIN_LONGITUDE",
+         "DEST_LATITUDE", "DEST_LONGITUDE")) %>%
   select(-NB_ROUTES) %>%
   select(contains("ROUTE"), starts_with("NB_"), contains("AIRLINES"), everything()) %>%
   arrange(desc(NB_FLIGHTS))
@@ -162,10 +167,13 @@ tb_stats_delay_reason_carrier <- bind_rows(
     summarise(NB_DELAYS = n(),
               .groups = "drop") %>%
     mutate(CARRIER_NAME = "OVERALL")
-)
+) %>%
+  group_by(CARRIER_NAME) %>%
+  mutate(PCT_DELAYS = 100 * round(NB_DELAYS / sum(NB_DELAYS),3))
 
 #=========================== DATA SAVE ==============================
-write_rds(tb_kpis_overall, file = "data/processed/dashboard_data_kpis.rds")
+dashboard_data_location <- "src/flight-delays-dashboard/data/"
+write_rds(tb_kpis_overall, file = paste0(dashboard_data_location, "dashboard_data_kpis.rds"))
 
 write_rds(
   list(tb_stats_airline = tb_stats_airline,
@@ -174,11 +182,11 @@ write_rds(
        tb_stats_airline_DEP_DAY_TIME = tb_stats_airline_DEP_DAY_TIME,
        tb_stats_airline_DAY = tb_stats_airline_DAY
   ),
-  file = "data/processed/dashboard_data_airlines.rds")
+  file = paste0(dashboard_data_location, "dashboard_data_airlines.rds"))
 
-write_rds(tb_stats_routes, file = "data/processed/dashboard_data_routes.rds")
+write_rds(tb_stats_routes, file = paste0(dashboard_data_location, "dashboard_data_routes.rds"))
 
-write_rds(tb_stats_airports, file = "data/processed/dashboard_data_airports.rds")
+write_rds(tb_stats_airports, file = paste0(dashboard_data_location, "dashboard_data_airports.rds"))
 
 write_rds(
   list(tb_stats_routes_carrier_MONTH = tb_stats_routes_carrier_MONTH,
@@ -187,4 +195,4 @@ write_rds(
        tb_stats_delay_time_carrier = tb_stats_delay_time_carrier,
        tb_stats_delay_reason_carrier = tb_stats_delay_reason_carrier
   ),
-  file = "data/processed/dashboard_data_delays.rds")
+  file = paste0(dashboard_data_location, "dashboard_data_delays.rds"))

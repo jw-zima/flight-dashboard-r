@@ -5,6 +5,7 @@
 /data/interim/tb_flights_2019.rds
 /data/processed/tb_flights_2019_filtered.rds
 /data/processed/dashboard_*
+src/flight-delays-dashboard/data/*
 
 # History files
 .Rhistory

@@ -113,17 +113,6 @@ tb_flights <- tb_flights %>%
          contains("DEST"), contains("DEP"), contains("ARR"),
          ends_with("DELAY"), everything())
 
-# #=========================== VISUALISATION ========================
-# tb_flights %>%
-#   group_by(CARRIER_NAME) %>%
-#   summarise(NB_FLIGHTS_THOUSAND = n() / 1000) %>%
-#   ggplot(.) %+%
-#   geom_col(aes(x = NB_FLIGHTS_THOUSAND, y = reorder(CARRIER_NAME, NB_FLIGHTS_THOUSAND, sum))) %+%
-#   ylab("AIRLINE") %+%
-#   ggtitle("Number of flights in 2019 by airline") %+%
-#   theme_light() %>%
-#   ggplotly()
-
 #=========================== DATA SAVE ==============================
 write_rds(tb_flights, "data/interim//tb_flights_2019.rds")
 
