@@ -172,7 +172,7 @@ tb_stats_delay_reason_carrier <- bind_rows(
   mutate(PCT_DELAYS = 100 * round(NB_DELAYS / sum(NB_DELAYS),3))
 
 #=========================== DATA SAVE ==============================
-dashboard_data_location <- "src/flight-delays-dashboard/data/"
+dashboard_data_location <- "flight-delays-dashboard/data/"
 write_rds(tb_kpis_overall, file = paste0(dashboard_data_location, "dashboard_data_kpis.rds"))
 
 write_rds(
