@@ -15,7 +15,7 @@ clean_colnames <- function(df){
   #' @usage clean_colnames(df)
   #' @return data frame with cleaned and unified column names
   #' @examples clean_colnames(iris)
-  x %>%
+  df %>%
     set_colnames(
       toupper(colnames(.)) %>%
         str_replace_all(., "[[:punct:]]| ", "_")
