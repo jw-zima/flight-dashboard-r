@@ -1,11 +1,14 @@
-library(shiny)
-library(readr)
-library(tidyverse)
-library(magrittr)
-library(ggplot2)
-library(plotly)
-library(leaflet)
-library(docstring)
+#=========================== SETUP ==============================
+library('shiny')
+library('shinythemes')
+library('shinydashboard')
+library('rmarkdown')
+library('readr')
+library('tidyverse')
+library('magrittr')
+library('ggplot2')
+library('plotly')
+library('docstring')
 
 # params to host in local network:
 # options(shiny.host = '192.168.0.196')
@@ -38,7 +41,7 @@ plot_barplot_stat_by_time <- function(df, stat, carrier, time_var) {
     #' @param carrier string, name of selected airline
     #' @param time_var string, name of selected time split ("MONTH", "WEEKDAY", "DEP_DAY_TIME")
     #' @usage plot_barplot_stat_by_time(df, stat, carrier, time_var)
-    #' @return bar plot rendered with ggplot and plotly 
+    #' @return bar plot rendered with ggplot and plotly
     #' @examples plot_barplot_stat_by_time(df = dashboard_data_airlines_MONTH,
     # stat = "NB_FLIGHTS", carrier = "OVERALL, time_var = "MONTH")
     time_var_cleaned <- ifelse(time_var == "DEP_DAY_TIME",
@@ -75,15 +78,15 @@ add_info_column <- function(df, type){
                             paste0("% flights delayed >180min: ", FLIGHTS_DEL_180_PCT),
                             paste0("avg arrival time diff [min]: ", AVG_ARRIVAL_TIME_DIFF_MIN),
                             paste0("avg delay [min]: ", AVG_DELAY_MIN),
-                            sep = "<br/>"))   
+                            sep = "<br/>"))
     if(type == "route"){
         df <- df %>%
-            mutate(INFO = paste(INFO, 
+            mutate(INFO = paste(INFO,
                                 paste0("distance [km]: ", DISTANCE),
                                 paste0("flight time [min]: ", round(FLIGHT_TIME)),
-                                sep = "<br/>"))   
+                                sep = "<br/>"))
     } else if (type == "airport"){
-        df <- df 
+        df <- df
     }
     df
 }
@@ -100,8 +103,8 @@ for (file in files_to_load){
 #=========================== APP ==============================
 shinyServer(function(input, output) {
 
-    
-    ###################### KPIs ###################### 
+
+    ###################### KPIs ######################
     output$kpiAirlines <- renderValueBox({
         valueBox(
             dashboard_data_kpis$NB_AIRLINES,
@@ -110,7 +113,7 @@ shinyServer(function(input, output) {
             color = "blue"
         )
     })
-    
+
     output$kpiRoutes <- renderValueBox({
         valueBox(
             dashboard_data_kpis$NB_ROUTES_TH,
@@ -118,7 +121,7 @@ shinyServer(function(input, output) {
             color = "blue"
         )
     })
-    
+
     output$kpiFlights <- renderValueBox({
         valueBox(
             dashboard_data_kpis$NB_FLIGHTS_MN,
@@ -126,7 +129,7 @@ shinyServer(function(input, output) {
             color = "blue"
         )
     })
-    
+
     output$kpiOnTime <- renderValueBox({
         valueBox(
             paste0(dashboard_data_kpis$FLIGHTS_ON_TIME_PCT,"%"),
@@ -134,7 +137,7 @@ shinyServer(function(input, output) {
             color = "green"
         )
     })
-    
+
     output$kpiDelayed60 <- renderValueBox({
         valueBox(
             paste0(dashboard_data_kpis$FLIGHTS_DEL_60_PCT,"%"),
@@ -142,7 +145,7 @@ shinyServer(function(input, output) {
             color = "yellow"
         )
     })
-    
+
     output$kpiDelayed180 <- renderValueBox({
         valueBox(
             paste0(dashboard_data_kpis$FLIGHTS_DEL_180_PCT,"%"),
@@ -150,12 +153,12 @@ shinyServer(function(input, output) {
             color = "red"
         )
     })
-    
-    ###################### KEY STATS TAB ###################### 
+
+    ###################### KEY STATS TAB ######################
     selected_column_stats_tab <- reactive({
         map_stats_to_colnames(input$tabStatsStatSelect)
     })
-    
+
     output$barplotStatByAirline <- renderPlotly({
         dashboard_data_airlines$tb_stats_airline %>%
             filter(CARRIER_NAME != "OVERALL") %>%
@@ -172,7 +175,7 @@ shinyServer(function(input, output) {
             xlab(input$tabStatsStatSelect) %>%
             ggplotly()
     })
-    
+
     output$lineplotStatByAirline <- renderPlotly({
         dashboard_data_airlines$tb_stats_airline_DAY %>%
             filter(CARRIER_NAME == input$tabStatsSelectCarrier) %>%
@@ -187,32 +190,32 @@ shinyServer(function(input, output) {
             xlab("Flight date") %>%
             ggplotly()
     })
-    
+
     output$barlotStatByMonth <- renderPlotly({
         plot_barplot_stat_by_time(df = dashboard_data_airlines$tb_stats_airline_MONTH,
                                   stat = selected_column_stats_tab(),
                                   carrier = input$tabStatsSelectCarrier,
                                   time_var = "MONTH")
     })
-    
+
     output$barlotStatByWeekday <- renderPlotly({
         plot_barplot_stat_by_time(df = dashboard_data_airlines$tb_stats_airline_WEEKDAY,
                                   stat = selected_column_stats_tab(),
                                   carrier = input$tabStatsSelectCarrier,
                                   time_var = "WEEKDAY")
     })
-    
+
     output$barlotStatByDaytime <- renderPlotly({
         plot_barplot_stat_by_time(df = dashboard_data_airlines$tb_stats_airline_DEP_DAY_TIME,
                                   stat = selected_column_stats_tab(),
                                   carrier = input$tabStatsSelectCarrier,
                                   time_var = "DEP_DAY_TIME")
     })
-    ###################### ROUTES TAB ###################### 
+    ###################### ROUTES TAB ######################
     selected_column_routes_tab <- reactive({
         map_stats_to_colnames(input$tabRoutesStatsSelect)
     })
-    
+
     data_tab_routes <- reactive({
         data_tab_routes <- dashboard_data_routes %>%
             filter(CARRIER_NAME == input$tabRoutesSelectCarrier) %>%
@@ -229,27 +232,27 @@ shinyServer(function(input, output) {
         }
         data_tab_routes
     })
-    
+
     output$tableRoutes <- renderDataTable({
         data_tab_routes() %>%
             select(-ends_with("TUDE"))
     })
-    
+
     output$mapRoutes <- renderLeaflet({
         map_data <- data_tab_routes() %>%
-            add_info_column(., type = "route") 
-        
+            add_info_column(., type = "route")
+
         map_data <- bind_rows(map_data %>% select(ROUTE, ROUTE_NAME, INFO, LNG = ORIGIN_LONGITUDE, LAT = ORIGIN_LATITUDE),
                        map_data %>% select(ROUTE, ROUTE_NAME, INFO, LNG = DEST_LONGITUDE, LAT = DEST_LATITUDE))
-        
-        
+
+
         leaflet(data = map_data) %>%
             addProviderTiles(providers$CartoDB.Positron) %>%
             addPolylines(., lng = ~LNG,lat = ~LAT, group = ~ROUTE_NAME, color = "steelblue",
                          popup = ~as.character(INFO), label = ~paste(ROUTE, " | ", ROUTE_NAME))
     })
-    ###################### AIRPORTS TAB ###################### 
-    
+    ###################### AIRPORTS TAB ######################
+
     selected_column_airports_tab <- reactive({
         map_stats_to_colnames(input$tabAirportsStatsSelect)
     })
@@ -275,12 +278,12 @@ shinyServer(function(input, output) {
             addMarkers(~DEST_LONGITUDE, ~DEST_LATITUDE,
                        popup = ~as.character(INFO), label = ~paste(DEST, " | ", DEST_NAME))
     })
-    
+
     ###################### DELAYS TAB ######################
-    
+
     output$barplotDelayReasonByAirline <- renderPlotly({
         dashboard_data_delays$tb_stats_delay_reason_carrier %>%
-            rename(REASON = REASON_MAX_TIME) %>%  
+            rename(REASON = REASON_MAX_TIME) %>%
             filter(CARRIER_NAME == input$tabDelaysSelect) %>%
             arrange(across(starts_with("PCT_DELAYS"))) %>%
             mutate(REASON = factor(REASON, levels = .$REASON)) %>%
@@ -294,10 +297,10 @@ shinyServer(function(input, output) {
             xlab("Percent of delays") %>%
             ggplotly()
     })
-    
+
     output$barplotDelayTimeByAirline <- renderPlotly({
         dashboard_data_delays$tb_stats_delay_time_carrier %>%
-            rename(REASON = KEY, DELAY_LENGTH = VALUE) %>%  
+            rename(REASON = KEY, DELAY_LENGTH = VALUE) %>%
             filter(CARRIER_NAME == input$tabDelaysSelect) %>%
             arrange(across(starts_with("DELAY_LENGTH"))) %>%
             mutate(REASON = factor(REASON, levels = .$REASON)) %>%
@@ -311,6 +314,6 @@ shinyServer(function(input, output) {
             xlab("Delay length [min]") %>%
             ggplotly()
     })
-    
+
 
 })
