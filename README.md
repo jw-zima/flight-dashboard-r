@@ -62,6 +62,8 @@ The following command would:
 * build and run Docker
 * copy the app to container and host it there.
 
+If the code was running on a local machine to access the dashboard open a browser and type:
+**localhost:3838**
 
 ## Developer requirements
 
