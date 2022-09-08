@@ -37,5 +37,5 @@ RUN R -e "install.packages(c('shiny', 'shinythemes', 'shinydashboard', 'rmarkdow
 # expose port
 EXPOSE 3838
 
-# run app on container start
+# run app on container
 CMD ["R", "-e", "shiny::runApp('/app', host = '0.0.0.0', port = 3838)"]
