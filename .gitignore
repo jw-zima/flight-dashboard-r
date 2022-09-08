@@ -7,6 +7,9 @@
 /data/processed/dashboard_*
 flight-delays-dashboard/data/*
 
+# Access key to kaggle platform
+.kaggle/*
+
 # History files
 .Rhistory
 .Rapp.history

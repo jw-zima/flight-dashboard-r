@@ -63,12 +63,13 @@ The following command would:
 * copy the app to container and host it there.
 
 
-## Install developer requirements
+## Developer requirements
 
 1. bash
 2. R
 3. conda
 4. Docker
+5. Created account in kaggle API, kaggle.json file with username and key saved in .kaggle folder
 
 ________________
 
@@ -76,6 +77,8 @@ ________________
 ## Project Organization
 
 ```
+├── .kaggle                 <- Folder with username and key needed to access the Kaggle API
+│
 ├── data
 │   ├── interim             <- Intermediate data that has been transformed.
 │   ├── processed           <- The final, canonical data sets used to compute all stats for the dashboard.
