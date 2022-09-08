@@ -8,7 +8,7 @@
 flight-delays-dashboard/data/*
 
 # Access key to kaggle platform
-.kaggle/*
+.kaggle/kaggle.json
 
 # History files
 .Rhistory
